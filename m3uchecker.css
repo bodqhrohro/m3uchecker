@@ -1,0 +1,37 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.stream {
+	width: calc(100% - 6px);
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 2px;
+	box-sizing: border-box;
+}
+
+.stream__good {
+	background-color: #008800;
+	color: white;
+}
+
+.stream__warn {
+	background-color: #888800;
+	color: white;
+}
+
+.stream__bad {
+	background-color: #880000;
+	color: white;
+}
+
+.stream-name {
+	display: block;
+	font-weight: bold;
+}
+
+.stream-url {
+	word-break: break-all;
+}
