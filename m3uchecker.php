@@ -67,6 +67,8 @@ endwhile;
 
 fclose($m3u_fd);
 
-symlink($report_name, "reports/report.html");
+$symlink_name = "reports/report.html";
+unlink($symlink_name);
+symlink($report_name, $symlink_name);
 
 ob_end_clean();
