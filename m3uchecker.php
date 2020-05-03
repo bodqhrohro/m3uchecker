@@ -1,4 +1,6 @@
 <?php
+define('BANLIST_NAME', 'banlist.txt');
+
 function dump_html() {
 	global $report_fd;
 
@@ -8,6 +10,17 @@ function dump_html() {
 }
 
 chdir(dirname(__FILE__));
+
+$banlist = [];
+if (file_exists(BANLIST_NAME)) {
+	$banlist_fd = fopen(BANLIST_NAME, 'r');
+
+	while (($banlist_line = fgets($banlist_fd)) !== FALSE) {
+		$banlist[] = $banlist_line;
+	}
+
+	fclose($banlist_fd);
+}
 
 ob_start();
 $timestamp = date('Ymd-His');
@@ -36,17 +49,29 @@ while (($line = fgets($m3u_fd)) !== FALSE):
 		$url = trim($line);
 
 		$stream_count = 0;
+		$is_banned = FALSE;
 
-		$ffprobe_fd = popen("ffprobe -hide_banner \"$url\" 2>&1", 'r');
-		while (($ffprobe_line = fgets($ffprobe_fd)) !== FALSE) {
-			if (preg_match('/^\s*Stream/', $ffprobe_line)) {
-				$stream_count ++;
+		foreach ($banlist as $banlist_regex) {
+			if (preg_match($banlist_regex, $url)) {
+				$is_banned = TRUE;
+				break;
 			}
 		}
-		pclose($ffprobe_fd);
+
+		if (!$is_banned) {
+			$ffprobe_fd = popen("ffprobe -hide_banner \"$url\" 2>&1", 'r');
+			while (($ffprobe_line = fgets($ffprobe_fd)) !== FALSE) {
+				if (preg_match('/^\s*Stream/', $ffprobe_line)) {
+					$stream_count ++;
+				}
+			}
+			pclose($ffprobe_fd);
+		}
 
 		$status = 'bad';
-		if ($stream_count >= 2) {
+		if ($is_banned) {
+			$status = 'banned';
+		} else if ($stream_count >= 2) {
 			$status = 'good';
 		} else if ($stream_count == 1) {
 			$status = 'warn';

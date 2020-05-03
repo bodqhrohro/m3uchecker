@@ -27,6 +27,11 @@ body {
 	color: white;
 }
 
+.stream__banned {
+	background-color: #888888;
+	color: white;
+}
+
 .stream-header {
 	font-weight: bold;
 }
