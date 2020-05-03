@@ -23,6 +23,7 @@ $m3u_fd = fopen('../1119.m3u', 'r');
 if (!$m3u_fd) die;
 
 $label = NULL;
+$order = 0;
 
 while (($line = fgets($m3u_fd)) !== FALSE):
 	if (strpos($line, '#EXTINF') === 0):
@@ -31,6 +32,7 @@ while (($line = fgets($m3u_fd)) !== FALSE):
 	else:
 		if ($label === NULL) continue;
 
+		$order ++;
 		$url = trim($line);
 
 		$stream_count = 0;
@@ -55,7 +57,10 @@ while (($line = fgets($m3u_fd)) !== FALSE):
 
 ?>
 <div class="stream stream__<?=$status?>">
-	<span class="stream-name"><?=$label?></span>
+	<div class="stream-header">
+		<span class="stream-order"><?=$order?></span>
+		<span class="stream-name"><?=$label?></span>
+	</div>
 	<span class="stream-url"><?=$url?></span>
 </div>
 <?php

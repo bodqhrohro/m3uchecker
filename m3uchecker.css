@@ -27,9 +27,12 @@ body {
 	color: white;
 }
 
-.stream-name {
-	display: block;
+.stream-header {
 	font-weight: bold;
+}
+
+.stream-order:after {
+	content: ". ";
 }
 
 .stream-url {
