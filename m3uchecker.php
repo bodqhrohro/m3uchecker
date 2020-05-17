@@ -59,7 +59,17 @@ while (($line = fgets($m3u_fd)) !== FALSE):
 		}
 
 		if (!$is_banned) {
-			$ffprobe_fd = popen("timeout 1m ffprobe -hide_banner \"$url\" 2>&1", 'r');
+			$stream_url = $url;
+
+			// detect YouTube links
+			if (preg_match('/^https?:\/\/[^\/]*youtu/', $url)) {
+				$ytdl_fd = popen("youtube-dl -g \"$url\"", 'r');
+				$stream_url = trim(fgets($ytdl_fd)); // may get empty, ffprobe will fail anyway
+				pclose($ytdl_fd);
+			}
+
+			// get the number of streams
+			$ffprobe_fd = popen("timeout 1m ffprobe -hide_banner \"$stream_url\" 2>&1", 'r');
 			while (($ffprobe_line = fgets($ffprobe_fd)) !== FALSE) {
 				if (preg_match('/^\s*Stream/', $ffprobe_line)) {
 					$stream_count ++;

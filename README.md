@@ -9,3 +9,4 @@ The optional `banlist.txt` file is supported, which should contain regexp lines 
 * PHP >= 5.4
 * `ffprobe`
 * `timeout` from GNU coreutils (or similar)
+* `youtube-dl` (only if the playlist may contain YouTube links)
