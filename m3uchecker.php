@@ -59,7 +59,7 @@ while (($line = fgets($m3u_fd)) !== FALSE):
 		}
 
 		if (!$is_banned) {
-			$ffprobe_fd = popen("ffprobe -hide_banner -rw_timeout 60000000 \"$url\" 2>&1", 'r');
+			$ffprobe_fd = popen("timeout 1m ffprobe -hide_banner \"$url\" 2>&1", 'r');
 			while (($ffprobe_line = fgets($ffprobe_fd)) !== FALSE) {
 				if (preg_match('/^\s*Stream/', $ffprobe_line)) {
 					$stream_count ++;
