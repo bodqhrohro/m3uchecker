@@ -29,6 +29,7 @@ $report_fd = fopen("reports/$report_name", 'w');
 ?>
 <link rel="stylesheet" href="../m3uchecker.css"/>
 <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <?php
 dump_html();
 
